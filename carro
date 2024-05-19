@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registro de Autos</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+    }
+    input[type="text"], select {
+        width: 200px;
+        padding: 5px;
+        margin-bottom: 10px;
+    }
+    input[type="submit"] {
+        padding: 8px 15px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+    #autos-list {
+        margin-top: 20px;
+    }
+</style>
+</head>
+<body>
+
+<h2>Registro de Autos</h2>
+
+<form id="auto-form">
+    <label for="patente">Patente:</label><br>
+    <input type="text" id="patente" required><br>
+    <label for="modelo">Modelo:</label><br>
+    <input type="text" id="modelo" required><br>
+    <label for="marca">Marca:</label><br>
+    <input type="text" id="marca" required><br>
+    <label for="anio">Año:</label><br>
+    <input type="text" id="anio" required><br>
+    <input type="submit" value="Guardar">
+</form>
+
+<div id="autos-list"></div>
+
+<script>
+    // Función para guardar el auto en localStorage
+    function guardarAuto() {
+        var patente = document.getElementById('patente').value;
+        var modelo = document.getElementById('modelo').value;
+        var marca = document.getElementById('marca').value;
+        var anio = document.getElementById('anio').value;
+
+        // Validar que todos los campos estén completos
+        if (patente && modelo && marca && anio) {
+            // Crear objeto auto
+            var auto = {
+                "patente": patente,
+                "modelo": modelo,
+                "marca": marca,
+                "anio": anio
+            };
+
+            // Obtener autos existentes del localStorage o inicializar un array vacío
+            var autos = JSON.parse(localStorage.getItem('autos')) || [];
+
+            // Agregar el nuevo auto al array
+            autos.push(auto);
+
+            // Guardar el array de autos en localStorage
+            localStorage.setItem('autos', JSON.stringify(autos));
+
+            // Limpiar el formulario
+            document.getElementById('auto-form').reset();
+
+            // Mostrar la lista de autos actualizada
+            mostrarAutos();
+        } else {
+            alert("Por favor complete todos los campos.");
+        }
+    }
+
+    // Función para mostrar la lista de autos
+    function mostrarAutos() {
+        var autos = JSON.parse(localStorage.getItem('autos'));
+
+        var autosList = document.getElementById('autos-list');
+        autosList.innerHTML = '';
+
+        if (autos && autos.length > 0) {
+            var html = '<h3>Autos Registrados:</h3><ul>';
+            autos.forEach(function(auto) {
+                html += '<li>Patente: ' + auto.patente + ', Modelo: ' + auto.modelo + ', Marca: ' + auto.marca + ', Año: ' + auto.anio + '</li>';
+            });
+            html += '</ul>';
+            autosList.innerHTML = html;
+        } else {
+            autosList.innerHTML = '<p>No hay autos registrados.</p>';
+        }
+    }
+
+    // Mostrar la lista de autos al cargar la página
+    window.onload = function() {
+        mostrarAutos();
+    };
+
+    // Agregar evento al formulario para guardar el auto
+    document.getElementById('auto-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        guardarAuto();
+    });
+</script>
+
+</body>
+</html>
