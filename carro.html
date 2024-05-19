@@ -54,85 +54,88 @@
 
 <h2>compra esos accesorios</h2>
 
-<form id="auto-form">
-    <label for="patente">Patente:</label><br>
-    <input type="text" id="patente" required><br>
-    <label for="modelo">Modelo:</label><br>
-    <input type="text" id="modelo" required><br>
-    <label for="marca">Marca:</label><br>
-    <input type="text" id="marca" required><br>
-    <label for="anio">Año:</label><br>
-    <input type="text" id="anio" required><br>
+<form id="accesorios-form">
+    <label for="nombre">Nombre del accesorio:</label><br>
+    <input type="text" id="nombre" required><br>
+    <label for="tipo">Tipo de accesorio:</label><br>
+    <select id="tipo" required>
+        <option value="">Seleccione el tipo</option>
+        <option value="Juguetes">Juguetes</option>
+        <option value="Rascadores">Rascadores</option>
+        <option value="Transportadoras">Transportadoras</option>
+        <option value="Alimentación">Alimentación</option>
+        <option value="Otros">Otros</option>
+    </select><br>
+    <label for="precio">Precio:</label><br>
+    <input type="text" id="precio" required><br>
     <input type="submit" value="Guardar">
 </form>
 
-<div id="autos-list"></div>
+<div id="accesorios-list"></div>
 
 <script>
-    // Función para guardar el auto en localStorage
-    function guardarAuto() {
-        var patente = document.getElementById('patente').value;
-        var modelo = document.getElementById('modelo').value;
-        var marca = document.getElementById('marca').value;
-        var anio = document.getElementById('anio').value;
+    // Función para guardar el accesorio en localStorage
+    function guardarAccesorio() {
+        var nombre = document.getElementById('nombre').value;
+        var tipo = document.getElementById('tipo').value;
+        var precio = document.getElementById('precio').value;
 
         // Validar que todos los campos estén completos
-        if (patente && modelo && marca && anio) {
-            // Crear objeto auto
-            var auto = {
-                "patente": patente,
-                "modelo": modelo,
-                "marca": marca,
-                "anio": anio
+        if (nombre && tipo && precio) {
+            // Crear objeto accesorio
+            var accesorio = {
+                "nombre": nombre,
+                "tipo": tipo,
+                "precio": precio
             };
 
-            // Obtener autos existentes del localStorage o inicializar un array vacío
-            var autos = JSON.parse(localStorage.getItem('autos')) || [];
+            // Obtener accesorios existentes del localStorage o inicializar un array vacío
+            var accesorios = JSON.parse(localStorage.getItem('accesorios')) || [];
 
-            // Agregar el nuevo auto al array
-            autos.push(auto);
+            // Agregar el nuevo accesorio al array
+            accesorios.push(accesorio);
 
-            // Guardar el array de autos en localStorage
-            localStorage.setItem('autos', JSON.stringify(autos));
+            // Guardar el array de accesorios en localStorage
+            localStorage.setItem('accesorios', JSON.stringify(accesorios));
 
             // Limpiar el formulario
-            document.getElementById('auto-form').reset();
+            document.getElementById('accesorios-form').reset();
 
-            // Mostrar la lista de autos actualizada
-            mostrarAutos();
+            // Mostrar la lista de accesorios actualizada
+            mostrarAccesorios();
         } else {
             alert("Por favor complete todos los campos.");
         }
     }
 
-    // Función para mostrar la lista de autos
-    function mostrarAutos() {
-        var autos = JSON.parse(localStorage.getItem('autos'));
+    // Función para mostrar la lista de accesorios
+    function mostrarAccesorios() {
+        var accesorios = JSON.parse(localStorage.getItem('accesorios'));
 
-        var autosList = document.getElementById('autos-list');
-        autosList.innerHTML = '';
+        var accesoriosList = document.getElementById('accesorios-list');
+        accesoriosList.innerHTML = '';
 
-        if (autos && autos.length > 0) {
-            var html = '<h3>Autos Registrados:</h3><ul>';
-            autos.forEach(function(auto) {
-                html += '<li>Patente: ' + auto.patente + ', Modelo: ' + auto.modelo + ', Marca: ' + auto.marca + ', Año: ' + auto.anio + '</li>';
+        if (accesorios && accesorios.length > 0) {
+            var html = '<h3>Accesorios Registrados:</h3><ul>';
+            accesorios.forEach(function(accesorio) {
+                html += '<li>Nombre: ' + accesorio.nombre + ', Tipo: ' + accesorio.tipo + ', Precio: $' + accesorio.precio + '</li>';
             });
             html += '</ul>';
-            autosList.innerHTML = html;
+            accesoriosList.innerHTML = html;
         } else {
-            autosList.innerHTML = '<p>No hay autos registrados.</p>';
+            accesoriosList.innerHTML = '<p>No hay accesorios registrados.</p>';
         }
     }
 
-    // Mostrar la lista de autos al cargar la página
+    // Mostrar la lista de accesorios al cargar la página
     window.onload = function() {
-        mostrarAutos();
+        mostrarAccesorios();
     };
 
-    // Agregar evento al formulario para guardar el auto
-    document.getElementById('auto-form').addEventListener('submit', function(event) {
+    // Agregar evento al formulario para guardar el accesorio
+    document.getElementById('accesorios-form').addEventListener('submit', function(event) {
         event.preventDefault();
-        guardarAuto();
+        guardarAccesorio();
     });
 </script>
 <footer class="bg-dark text-light text-center py-3 fixed-bottom">
